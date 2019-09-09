@@ -8,7 +8,7 @@ class Comment extends Model
 {
     protected $table = "comments";
 
-    protected $fillable = ["body","author_id","commentable_id","commentable_type"];
+    protected $fillable = ["comment","author_id","commentable_id","commentable_type"];
 
     protected $appends = ["username"];
 
