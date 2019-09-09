@@ -10,6 +10,10 @@ return [
     'comments-panel' => [
         'name' => 'Comments'
     ],
+        
+    'comments-table' => 'comments',
+    
+    'comments-migrate' => false,
 
     // Maximum length of comment in comments panel
     'limit' => 100,
