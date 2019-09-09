@@ -46,15 +46,15 @@ class Comment extends Resource
     public function fields(Request $request)
     {
         return [
-            Textarea::make('comment')
+            Textarea::make('body')
                 ->alwaysShow()
                 ->hideFromIndex(),
 
             MorphTo::make('Commentable')->onlyOnIndex(),
 
-            Text::make('comment')
-                ->displayUsing(function ($comment) {
-                    return Str::limit($comment, config('nova-comments.limit'));
+            Text::make('body')
+                ->displayUsing(function ($body) {
+                    return Str::limit($body, config('nova-comments.limit'));
                 })
                 ->onlyOnIndex(),
 
