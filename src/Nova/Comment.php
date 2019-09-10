@@ -37,6 +37,10 @@ class Comment extends Resource
         'comment'
     ];
 
+    public static function availableForNavigation(Request $request) {
+        return config("nova-comments.displayInNavigation");
+    }
+
     /**
      * Get the fields displayed by the resource.
      *

@@ -10,9 +10,11 @@ return [
     'comments-panel' => [
         'name' => 'Comments'
     ],
-        
+
+    'displayInNavigation' => false,
+
     'comments-table' => 'comments',
-    
+
     'comments-migrate' => false,
 
     // Maximum length of comment in comments panel
