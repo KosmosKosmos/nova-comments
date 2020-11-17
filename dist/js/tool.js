@@ -307,6 +307,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -323,11 +325,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 next_page_url: '',
                 prev_page_url: '',
                 resources: {}
-            }
+            },
+            isPosting: false
         };
     },
     mounted: function mounted() {
-        this.getComments(this.commentsUri);        
+        this.getComments(this.commentsUri);
     },
 
 
@@ -366,15 +369,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 viaResourceId: this.resourceId,
                 viaRelationship: 'comments'
             };
-
+            this.isPosting = true;
             axios.post(this.baseCommentUri, payload).then(function () {
+                _this.isPosting = false;
                 _this.getComments(_this.commentsUri);
 
                 _this.resetComment();
 
                 _this.$toasted.show('A new comment has been created.', { type: 'success' });
             }).catch(function (response) {
-                return _this.$toasted.show(response, { type: 'error' });
+                _this.isPosting = false;
+                _this.$toasted.show(response, { type: 'error' });
             });
         },
         getComments: function getComments(uri) {
@@ -638,7 +643,7 @@ var render = function() {
             {
               staticClass:
                 "btn btn-default btn-primary inline-flex items-center relative mt-4",
-              attrs: { type: "submit" },
+              attrs: { type: "submit", disabled: _vm.isPosting },
               on: { click: _vm.createComment }
             },
             [_vm._v("\n                Save Comment\n            ")]

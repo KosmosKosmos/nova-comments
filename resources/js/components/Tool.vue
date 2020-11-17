@@ -28,7 +28,9 @@
 
                 <button class="btn btn-default btn-primary inline-flex items-center relative mt-4"
                     type="submit"
-                    @click="createComment">
+                    @click="createComment"
+                    :disabled="isPosting"
+                >
                     Save Comment
                 </button>
             </div>
@@ -78,7 +80,8 @@
                     next_page_url: '',
                     prev_page_url: '',
                     resources: {}
-                }
+                },
+                isPosting: false
             }
         },
 
@@ -124,16 +127,20 @@
                     viaResourceId: this.resourceId,
                     viaRelationship: 'comments',
                 };
-
+                this.isPosting = true;
                 axios.post(this.baseCommentUri, payload)
                     .then(() => {
+                        this.isPosting = false;
                         this.getComments(this.commentsUri);
 
                         this.resetComment();
 
                         this.$toasted.show(`A new comment has been created.`, { type: 'success' });
                     })
-                    .catch(response => this.$toasted.show(response, { type: 'error' }));
+                    .catch(response => {
+                        this.isPosting = false;
+                        this.$toasted.show(response, {type: 'error'})
+                    });
             },
 
             getComments(uri) {
