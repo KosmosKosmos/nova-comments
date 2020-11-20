@@ -57,11 +57,7 @@ class Comment extends Resource
 
             MorphTo::make('Commentable')->onlyOnIndex(),
 
-            Text::make('comment')
-                ->displayUsing(function ($comment) {
-                    return Str::limit($comment, config('nova-comments.limit'));
-                })
-                ->onlyOnIndex(),
+            Text::make('comment')->onlyOnIndex(),
 
             BelongsTo::make('Commenter', 'commenter', config('nova-comments.commenter.nova-resource'))
                 ->exceptOnForms(),
