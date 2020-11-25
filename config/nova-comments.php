@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     // Sets whether or not Comments should show up in sidebar navigation.
     'available-for-navigation' => true,
 
@@ -13,9 +14,7 @@ return [
     'comments-panel' => [
         'name' => 'Comments',
     ],
-
-    'displayInNavigation' => false,
-
+    
     'comments-table' => 'comments',
 
     'comments-migrate' => false,
