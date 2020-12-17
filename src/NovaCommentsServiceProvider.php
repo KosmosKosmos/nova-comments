@@ -10,8 +10,6 @@ class NovaCommentsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -22,8 +20,6 @@ class NovaCommentsServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -47,7 +43,9 @@ class NovaCommentsServiceProvider extends ServiceProvider
      */
     protected function migrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        if(config("nova-comments.comments-migrate")) {        
+            $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        }
     }
 
     /**

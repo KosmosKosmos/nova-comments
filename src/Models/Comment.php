@@ -6,17 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-     protected $table = 'nova_comments';
+    protected $table = "comments";
+
+    protected $fillable = ["comment","author_id","commentable_id","commentable_type"];
+
+    protected $appends = ["username"];
 
     /**
      * The "booting" method of the model.
-     *
-     * @return void
      */
     public static function boot()
     {
@@ -25,25 +22,26 @@ class Comment extends Model
         static::creating(
             function ($comment) {
                 if (auth()->check()) {
-                    $comment->commenter_id = auth()->id();
+                    $comment->author_id = auth()->id();
                 }
             }
         );
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function commentable()
-    {
+    public function getUsernameAttribute() {
+        return ($this->user) ? $this->user->name : __("user.name.deleted");
+    }
+
+    public function commenter() {
+        return $this->belongsTo("\App\User","author_id")->select("id","name","email");
+    }
+
+    public function thread() {
+        return $this->belongsTo("\App\Comment","comment_id");
+    }
+
+    public function commentable() {
         return $this->morphTo();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function commenter()
-    {
-        return $this->belongsTo(config('auth.providers.users.model'), 'commenter_id');
-    }
 }

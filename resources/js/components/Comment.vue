@@ -14,12 +14,15 @@
             {{ date }}
         </div>
 
-        <div class="mt-2" v-html="commentString"></div>
+        <div class="mt-2">
+            <read-more more-str=">>>" :text="commentString" link="#" less-str="<<<" :max-chars="150"></read-more>
+        </div>
     </div>
 </template>
 
 <script>
     // require('moment-timezone');
+    import ReadMore from 'vue-read-more/components/ReadMoreComponent';
 
     export default {
         props: {
@@ -28,6 +31,8 @@
                 required: true
             }
         },
+
+        components: { ReadMore },
 
         computed: {
             commentString() {

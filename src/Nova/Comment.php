@@ -2,7 +2,7 @@
 
 namespace KirschbaumDevelopment\NovaComments\Nova;
 
-use App\Nova\Resource;
+use Laravel\Nova\Resource;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
@@ -34,13 +34,18 @@ class Comment extends Resource
      * @var array
      */
     public static $search = [
-        'comment'
+        'comment',
     ];
+
+    public static function availableForNavigation(Request $request) {
+        return config("nova-comments.displayInNavigation");
+    }
 
     /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function fields(Request $request)
@@ -52,11 +57,7 @@ class Comment extends Resource
 
             MorphTo::make('Commentable')->onlyOnIndex(),
 
-            Text::make('comment')
-                ->displayUsing(function ($comment) {
-                    return Str::limit($comment, config('nova-comments.limit'));
-                })
-                ->onlyOnIndex(),
+            Text::make('comment')->onlyOnIndex(),
 
             BelongsTo::make('Commenter', 'commenter', config('nova-comments.commenter.nova-resource'))
                 ->exceptOnForms(),
@@ -72,6 +73,7 @@ class Comment extends Resource
      * Get the cards available for the request.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function cards(Request $request)
@@ -83,6 +85,7 @@ class Comment extends Resource
      * Get the filters available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function filters(Request $request)
@@ -94,6 +97,7 @@ class Comment extends Resource
      * Get the lenses available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function lenses(Request $request)
@@ -105,6 +109,7 @@ class Comment extends Resource
      * Get the actions available for the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function actions(Request $request)
