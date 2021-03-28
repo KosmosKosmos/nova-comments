@@ -28,6 +28,8 @@ class Comment extends Resource
      */
     public static $title = 'id';
 
+    public static $globallySearchable = false;
+    
     /**
      * The columns that should be searched.
      *
@@ -39,6 +41,15 @@ class Comment extends Resource
 
     public static function availableForNavigation(Request $request) {
         return config("nova-comments.displayInNavigation");
+    }
+
+    /**
+     * Should show in global search?
+     * 
+     * @return bool
+     */
+    public static function isGloballySearchable() : bool {
+        return config("nova-comments.globally-searchable", false);
     }
 
     /**
