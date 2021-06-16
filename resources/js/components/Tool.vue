@@ -32,13 +32,15 @@
                 </button>
             </div>
 
-            <div class="flex border-b border-40 remove-bottom-border px-8" v-if="hasComments">
-                <div class="w-full py-6">
-                    <h3 class="text-90 font-bold text-lg mb-4">Comments</h3>
+            <loading-view :loading="isLoading">
+                <div class="flex border-b border-40 remove-bottom-border px-8" v-if="hasComments">
+                    <div class="w-full py-6">
+                        <h3 class="text-90 font-bold text-lg mb-4">Comments</h3>
 
-                    <comment :comment="comment" v-for="(comment, key) in data.resources" :key="key"></comment>
+                        <comment :comment="comment" v-for="(comment, key) in data.resources" :key="key"></comment>
+                    </div>
                 </div>
-            </div>
+            </loading-view>
 
             <div class="bg-20 rounded-b" v-if="hasPagination">
                 <nav class="flex justify-between items-center">
@@ -82,6 +84,7 @@ export default {
                 prev_page_url: '',
                 resources: {},
             },
+            isLoading: false,
             isPosting: false,
         };
     },
@@ -146,7 +149,11 @@ export default {
         },
 
         getComments(uri) {
-            axios.get(`${uri}${this.queryParams}`).then(({ data }) => (this.data = data));
+            this.setLoading(true);
+            axios.get(`${uri}${this.queryParams}`).then(({ data }) => {
+                this.data = data;
+                this.setLoading(false);
+            });
         },
 
         paginationClass(isActive) {
@@ -155,6 +162,10 @@ export default {
 
         resetComment() {
             this.comment = '';
+        },
+
+        setLoading(state) {
+            this.isLoading = state;
         },
     },
 };
